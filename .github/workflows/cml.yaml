@@ -25,7 +25,9 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Post reports as comments in GitHub PRs
-          pip install -r requirements.txt
-          python train.py
-          echo "MODEL METRICS"
-          cat metrics.txt
+          echo "## Model metrics" > report.md
+          cat metrics.txt >> report.md
+          
+          echo "## Visualization" > report.md
+          cml publish ./residuals.png --md >> report.md
+          cml publish ./feature_importance.png --md >> report.md
