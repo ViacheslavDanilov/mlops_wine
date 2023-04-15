@@ -1,4 +1,4 @@
-name: model-wine-quality
+name: your-workflow-name
 on: [push]
 jobs:
   run:
@@ -17,17 +17,19 @@ jobs:
       - uses: iterative/setup-cml@v1
       - name: Train model
         run: |
-          # Your ML workflow goes here
+          # ML workflow
           pip install -r requirements.txt
           python train.py
       - name: Write CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Post reports as comments in GitHub PRs
-          echo "## Model metrics" > report.md
+          # Post reports as comments in GitHub PR
+          echo "## Model metrics" >> report.md
           cat metrics.txt >> report.md
-          
-          echo "## Visualization" > report.md
-          cml publish ./residuals.png --md >> report.md
-          cml publish ./feature_importance.png --md >> report.md
+
+          echo "## Visualization" >> report.md          
+          cml publish residuals.png --md >> report.md
+          cml publish feature_importance.png --md >> report.md
+
+          cml comment create report.md
